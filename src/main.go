@@ -7,10 +7,12 @@ import (
 	"os/user"
   //"net"
   	"log"
-  
+	"sync"
+	
 )
 
 func main() {
+
 	currentUser, err := user.Current()
     if err != nil {
         log.Fatalf("Не вдалося отримати інформацію про користувача: %v", err)
@@ -20,6 +22,7 @@ func main() {
         fmt.Println("Ця програма потребує прав адміністратора.")
         os.Exit(1)
     }
+
 
 
 	localIP, err := getLocalIP()
@@ -41,4 +44,17 @@ func main() {
 			fmt.Println(host)
 		}
 	}
+
+	var wg sync.WaitGroup
+	// ress:=make(chan map[string]Port)
+	// iptoports
+	// for _, host := range availableHosts{
+		
+	// }
+	portList := scanAllPorts(availableHosts[0], &wg)
+	for _, port := range portList {
+        fmt.Printf("Порт: %d, Сервіс: %s, Версія: %s\n", port.Port, port.Service, port.Version)
+    }
+	
+
 }
